@@ -7,6 +7,6 @@ services:
     container_name: php-scheduler
     restart: unless-stopped
     volumes:
-      - ./src:/scheduler
+      - ./:/scheduler
     stdin_open: true
     tty: true
