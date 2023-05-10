@@ -5,3 +5,5 @@
 .phpunit*
 
 composer.lock
+
+main.php
