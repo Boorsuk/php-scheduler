@@ -26,5 +26,10 @@ interface Job {
 
     function setCronExpression(string|CronExpression $cronExpression): void;
 
+    /**
+     * return CronExpression(* * * * *) when $cronExpression is null
+     * 
+     * @return CronExpression 
+     */
     function getCronExpression(): CronExpression;
 }
