@@ -13,18 +13,34 @@ interface Job {
 
     function run(\DateTimeImmutable $runDateTime): void;
 
+
     /**
      * setting timezone which are gona be used while running job
      * 
      * @throws InvalidTimezoneException
-     * @param string|DateTimeZone $timezone 
+     * @param string|\DateTimeZone $timezone 
      * @return void 
      */
-    function setTimezone(string|\DateTimeZone $timezone): void;
+    function setTimezone(string|\DateTimeZone $timezone): self;
 
-    function getTimezone(): null|\DateTimeZone;
 
-    function setCronExpression(string|CronExpression $cronExpression): void;
+    /**
+     * return timezone
+     * 
+     * @return null|\DateTimeZone 
+     */
+    function getTimezone(): ?\DateTimeZone;
+
+
+    /**
+     * setting cron expression
+     * 
+     * @throws \InvalidArgumentException if not a valid CRON expression or any other part 
+     * @param string|CronExpression $cronExpression 
+     * @return void 
+     */
+    function setCronExpression(string|CronExpression $cronExpression): self;
+
 
     /**
      * return CronExpression(* * * * *) when $cronExpression is null
@@ -32,4 +48,13 @@ interface Job {
      * @return CronExpression 
      */
     function getCronExpression(): CronExpression;
+
+
+    /**
+     * check if job schould be executed
+     * 
+     * @param \DateTimeImmutable $runDateTime 
+     * @return bool 
+     */
+    function isDue(\DateTimeImmutable $runDateTime): bool;
 }

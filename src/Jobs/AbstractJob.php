@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Scheduler\Jobs;
 
 use Cron\CronExpression;
+use DateTimeImmutable;
 use DateTimeZone;
 use Scheduler\Exceptions\InvalidTimezoneException;
 
@@ -15,7 +16,7 @@ abstract class AbstractJob implements Job {
      * 
      * @var null|DateTimeZone
      */
-    protected ?\DateTimeZone $timezone;
+    protected ?\DateTimeZone $timezone = null;
 
 
     /**
@@ -29,11 +30,11 @@ abstract class AbstractJob implements Job {
     /**
      * setting timezone for job
      * 
+     * @throws InvalidTimezoneException
      * @param string|DateTimeZone $timezone 
-     * @return void 
-     * @throws InvalidTimezoneException 
+     * @return self  
      */
-    public function setTimezone(string|\DateTimeZone $timezone): void {
+    public function setTimezone(string|\DateTimeZone $timezone): self {
         try {
             $tz = is_string($timezone) ? (new \DateTimeZone($timezone)) : $timezone;
 
@@ -42,9 +43,15 @@ abstract class AbstractJob implements Job {
         }
 
         $this->timezone = $tz;
+        return $this;
     }
 
 
+    /**
+     * return timezone
+     * 
+     * @return null|DateTimeZone 
+     */
     public function getTimezone(): ?\DateTimeZone {
         return $this->timezone;
     }
@@ -55,18 +62,41 @@ abstract class AbstractJob implements Job {
      * 
      * @throws \InvalidArgumentException if not a valid CRON expression or any other part 
      * @param string|CronExpression $cronExpression 
-     * @return void 
+     * @return self 
      */
-    public function setCronExpression(string|CronExpression $cronExpression): void {
+    public function setCronExpression(string|CronExpression $cronExpression): self {
         $this->cronExpression = is_string($cronExpression) ? (new CronExpression($cronExpression)) : $cronExpression;
+
+        return $this;
     }
 
 
+    /**
+     * getCronExpression return (* * * * *) when null
+     * 
+     * @return CronExpression 
+     */
     public function getCronExpression(): CronExpression {
         if(!$this->cronExpression) {
             $this->cronExpression = new CronExpression('* * * * *');
         }
 
         return $this->cronExpression;
+    }
+
+
+    /**
+     * check if job schould be executed
+     * 
+     * @param DateTimeImmutable $runDateTime 
+     * @return bool 
+     */
+    public function isDue(\DateTimeImmutable $runDateTime): bool {
+        
+        if($this->timezone) {
+            $runDateTime = $runDateTime->setTimezone($this->timezone);
+        }
+
+        return $this->getCronExpression()->isDue($runDateTime, $this->timezone);
     }
 }
