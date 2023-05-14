@@ -24,7 +24,7 @@ abstract class AbstractJob implements Job {
      * 
      * @var CronExpression
      */
-    protected CronExpression $cronExpression;
+    protected ?CronExpression $cronExpression = null;
 
 
     /**
@@ -97,6 +97,6 @@ abstract class AbstractJob implements Job {
             $runDateTime = $runDateTime->setTimezone($this->timezone);
         }
 
-        return $this->getCronExpression()->isDue($runDateTime, $this->timezone);
+        return $this->getCronExpression()->isDue($runDateTime);
     }
 }
