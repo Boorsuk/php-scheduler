@@ -76,7 +76,7 @@ class AbstractJobTest extends TestCase {
         bool $expectedResult
     ) {
         //given
-        $runDateTime    = new \DateTimeImmutable('2023-03-11 11:30:00', new \DateTimeZone('Europe/Warsaw'));
+        $runDateTime    = new \DateTimeImmutable('2023-03-11 11:30:00', new \DateTimeZone('Europe/Warsaw')); // @notice this is CET time (UTC + 1)
         $cronExpression = new \Cron\CronExpression('* 11,8,3,5,1,17,19 11 * *');
         $testedClass    = $this->testedClass;
        
@@ -95,9 +95,9 @@ class AbstractJobTest extends TestCase {
             ['America/Los_Angeles', false],
             ['America/New_York', true],
             ['America/Sao_Paulo', false],
-            ['Asia/Tokyo', false],
+            ['Asia/Tokyo', true],
             ['Europe/London', false],
-            ['Asia/Singapore', true],
+            ['Asia/Singapore', false],
         ];
     }
 }
