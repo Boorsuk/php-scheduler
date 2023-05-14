@@ -71,7 +71,7 @@ class AbstractJobTest extends TestCase {
      * @dataProvider isDueDataProvider
      * @return void 
      */
-    public function IS_DUE_SHOULD_RETURN_EXPECTED_VALUE_BASE_ON_TIMEZONE(
+    public function IS_DUE_SHOULD_RETURN_EXPECTED_VALUE(
         string $timezone,
         bool $expectedResult
     ) {
