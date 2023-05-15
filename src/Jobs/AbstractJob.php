@@ -7,6 +7,7 @@ namespace Scheduler\Jobs;
 use Cron\CronExpression;
 use DateTimeImmutable;
 use DateTimeZone;
+use Scheduler\Contract\Job;
 use Scheduler\Exceptions\InvalidTimezoneException;
 
 abstract class AbstractJob implements Job {
@@ -26,6 +27,13 @@ abstract class AbstractJob implements Job {
      */
     protected ?CronExpression $cronExpression = null;
 
+
+    /**
+     * job indentifier
+     * 
+     * @var string
+     */
+    protected string $id;
 
     /**
      * setting timezone for job
@@ -98,5 +106,10 @@ abstract class AbstractJob implements Job {
         }
 
         return $this->getCronExpression()->isDue($runDateTime);
+    }
+
+
+    public function getId(): string {
+        return $this->id;
     }
 }

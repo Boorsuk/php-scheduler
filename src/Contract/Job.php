@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-namespace Scheduler\Jobs;
+namespace Scheduler\Contract;
 
 use Cron\CronExpression;
 use DateTimeZone;
@@ -57,4 +57,12 @@ interface Job {
      * @return bool 
      */
     function isDue(\DateTimeImmutable $runDateTime): bool;
+
+
+    /**
+     * return job identifier
+     * 
+     * @return string 
+     */
+    function getId(): string;
 }

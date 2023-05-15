@@ -8,8 +8,8 @@ use DateTimeImmutable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Scheduler\Exceptions\InvalidTimezoneException;
+use Scheduler\Contract\Job;
 use Scheduler\Jobs\AbstractJob;
-use Scheduler\Jobs\Job;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertInstanceOf;
